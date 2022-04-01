@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'All-Hotel';
+
+  public Title = 'All-Hotel';
+
+  public getDate(): Date{
+    return new Date();
+  }
 }

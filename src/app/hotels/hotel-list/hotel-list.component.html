@@ -1,0 +1,67 @@
+
+<h2 *ngIf="hotels && hotels.length > 0" > {{Title}} </h2>
+  <div class="alert alert-primary" *ngIf="!!receiveRating">
+    {{receiveRating}}
+  </div>
+
+<!-- boutton d'evenement click sur la vue des badges new des hotels-->
+<div class="container d-flex justify-content-around">
+  <button class="btn btn-primary" (click)="toggleISNewBadge()">
+    {{showBadge?'no view new':'view new'}}
+    <span class="material-icons">
+      {{showBadge?'visibility-off':'visibility'}}
+    </span>
+  </button>
+
+
+
+  <div class="my-2">
+    <div class="row">
+      <div class="col-md-4">
+        <span> filter now: <b>{{hotelFilter}}</b> </span>
+      </div>
+      <div class="col-md-8 form-group">
+        <input type="text" class="form-control" [(ngModel)]="hotelFilter">
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<br>
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <div class="col" *ngFor="let hotel of filteredHotels">
+    <div class="card">
+      <img [src]="hotel.hotelimage" class="card-img-top" [alt]="hotel.hotelname">
+      <div class="card-body">
+
+        <h5 class="card-title">{{hotel.hotelname|titlecase}}</h5>
+<!-- reglage du rating et de la fleche -->
+        <div class="d-flex justify-content-between align-items-baseline">
+
+          <app-start-ranking [rating]="hotel.rating" (starRatingClicled)="receiveRatingClicked($event)"></app-start-ranking>
+
+          <span class="material-icons bg-info text-white p-2 rounded-circle btn" [routerLink]="['/hotels',hotel.id,'edit']">
+            edit
+          </span>
+
+          <span class="material-icons bg-info text-white p-2 rounded-circle btn" [routerLink]="['/hotels',hotel.id]">
+            keyboard_arrow_right
+          </span>
+        </div>
+        <ng-container *ngFor="let tag of hotel.tags;let i=index">
+          <ng-container *ngIf="showBadge">
+            <span class="badge bg-warning text-dark"[ngClass]="i%2===0?'badge-info':'badge-succes mr-2 ml-2'" > {{tag}} </span>
+          </ng-container>
+
+        </ng-container>
+
+
+        <p class="card-text">{{hotel.hoteldescription}} <br> </p>
+
+        <h6>{{ hotel.hotelprice | currency: "EUR":"symbol":"1.2-2":"fr" }}</h6>
+      </div>
+    </div>
+  </div>
+</div>
+
